@@ -1,11 +1,12 @@
-import React,{useState} from "react";
+import React,{useState,useEffect, useRef} from "react";
 
 
 
-const Dropdpwn = ({options, selected, onSelectedChange}) => {
+const Dropdown = ({options, selected, onSelectedChange,text}) => {
     const [open, setOpen]=useState(false)
+    const ref = useRef();   
+    
     const renderedOptions = options.map((option)=>{
-        
         if(option.value=== selected.value){
             return null;
         }
@@ -20,13 +21,29 @@ const Dropdpwn = ({options, selected, onSelectedChange}) => {
             >
                 {option.label}
             </div>
-        )
+        );
     });
+
+    useEffect(() => {
+        const onBodyClick = (event) => {
+          if (ref.current.contains(event.target)) {
+            return;
+          }
+          setOpen(false);
+        };
+        document.body.addEventListener("click", onBodyClick, { capture: true });
+     
+        return () => {
+          document.body.removeEventListener("click", onBodyClick, {
+            capture: true,
+          });
+        };
+      }, []);
     
     return (
-        <div className="ui form">
+        <div ref={ref} className="ui form">
             <div className="field">
-                <label className="label">Select a color</label>
+                <label className="label">{text}</label>
                 <div onClick={()=>{setOpen(!open)}} className={`ui selection dropdown ${open ? "visible active" : "" }`}>
                     <i className="dropdown icon"></i>
                     <div className="text"> {selected.label}</div>
@@ -39,4 +56,4 @@ const Dropdpwn = ({options, selected, onSelectedChange}) => {
     )
 }
 
-export default Dropdpwn
+export default Dropdown
