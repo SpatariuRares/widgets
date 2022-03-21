@@ -3,6 +3,8 @@ import Accordion from "./components/Accordion";
 import Search from "./components/Search";
 import Dropdown from "./components/Dropdown";
 import Translate from "./components/Translate";
+import Route from "./components/Route";
+import Link from "./components/Link";
 
 const options=[
     {
@@ -47,21 +49,36 @@ const App =()=>{
 
     return (
         <div>
-            {/* <Accordion items={items}/> */}
-            {/* <Search/> */}
-            {/* <button onClick={()=>{setShowDropdown(!showDropdown)}}>Toggle Dropdown</button>
-            {showDropdown?
-                <Dropdown 
-                    selected={selected} 
-                    onSelectedChange={setSelected}
-                    options={options}
-                    text=''select a color/>
-                    : null
-            }
-            <div style={{color:`${selected.value}`}}>
-                This text is {selected.value}
-            </div> */}
-            <Translate/>
+            <header className="ui secondary pointing menu">
+                <Link className="item" href="/">Accordion</Link>
+                <Link className="item" href="/list">list</Link>
+                <Link className="item" href="/dropdown">dropdown</Link>
+                <Link className="item" href="/translate">translate</Link>
+            </header>
+            <hr/>
+            <Route path='/'>
+                <Accordion items={items}/>
+            </Route>
+            <Route path='/list'>
+                <Search/>
+            </Route>
+            <Route path='/dropdown'>
+                <button onClick={()=>{setShowDropdown(!showDropdown)}}>Toggle Dropdown</button>
+                {showDropdown?
+                    <Dropdown 
+                        selected={selected} 
+                        onSelectedChange={setSelected}
+                        options={options}
+                        text=''select a color/>
+                        : null
+                }
+                <div style={{color:`${selected.value}`}}>
+                    This text is {selected.value}
+                </div> 
+            </Route>
+            <Route path='/translate'>
+                <Translate/>
+            </Route>
         </div>
     )
 }
